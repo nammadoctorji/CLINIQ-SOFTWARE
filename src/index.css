@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body { @apply bg-paper text-body font-sans text-[14px] antialiased; }
+
+@layer components {
+  .btn { @apply cursor-pointer rounded-lg border border-line-strong bg-white px-3.5 py-[7px] text-[13px] text-body hover:bg-[#F3F2EE] transition-colors; }
+  .btn-pri { @apply btn bg-teal border-teal text-white hover:bg-teal-dark; }
+  .btn-ghost { @apply btn border-transparent bg-transparent text-body-2 hover:bg-[#F0EFEA]; }
+  .inp { @apply w-full rounded-lg border border-line-strong bg-white px-2.5 py-2 text-[13.5px] focus:outline-none focus:ring-2 focus:ring-teal focus:border-teal; }
+  .lbl { @apply block text-[11.5px] font-medium uppercase tracking-wider text-body-3 mb-1.5; }
+  .card { @apply bg-white border border-line rounded-card; }
+  .chip { @apply inline-flex items-center gap-1 rounded-full px-2.5 py-[3px] text-[12px] font-medium; }
+  .chip-red { @apply chip bg-danger-wash text-danger; }
+  .chip-amber { @apply chip bg-caution-wash text-caution; }
+  .chip-green { @apply chip bg-ok-wash text-ok; }
+  .chip-teal { @apply chip bg-teal-wash text-teal-dark; }
+  .chip-gray { @apply chip bg-[#EFEEE9] text-body-2; }
+  .th { @apply text-left text-[11.5px] font-medium uppercase tracking-wide text-body-3 px-2.5 py-2 border-b border-line; }
+  .td { @apply px-2.5 py-2.5 border-b border-line align-middle; }
+}
