@@ -3,8 +3,9 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     function signedIn() { return request.auth != null; }
+    function isSuperadmin() { return signedIn() && request.auth.token.superadmin == true; }
     function inTenant(tenantId) {
-      return signedIn() && request.auth.token.tenantId == tenantId;
+      return signedIn() && (request.auth.token.tenantId == tenantId || isSuperadmin());
     }
     function hasRole(tenantId, roles) {
       return inTenant(tenantId) && request.auth.token.role in roles;
@@ -12,7 +13,7 @@ service cloud.firestore {
 
     match /tenants/{tenantId} {
       allow read: if inTenant(tenantId);
-      allow write: if false; // tenants are created only by the seed script / admin SDK
+      allow write: if isSuperadmin(); // tenants are created by the seed script / admin SDK, or a superadmin via the Superadmin tool
 
       match /staff/{staffId} {
         allow read: if inTenant(tenantId);
@@ -32,15 +33,15 @@ service cloud.firestore {
       }
       match /pharmacy_stock/{batchId} {
         allow read: if inTenant(tenantId);
-        allow write: if hasRole(tenantId, ['admin', 'doctor', 'nurse']);
+        allow write: if hasRole(tenantId, ['admin', 'doctor', 'nurse']) || isSuperadmin();
       }
       match /templates/{templateId} {
         allow read: if inTenant(tenantId);
-        allow write: if hasRole(tenantId, ['admin', 'doctor']);
+        allow write: if hasRole(tenantId, ['admin', 'doctor']) || isSuperadmin();
       }
       match /settings/{docId} {
         allow read: if inTenant(tenantId);
-        allow write: if hasRole(tenantId, ['admin', 'doctor']);
+        allow write: if hasRole(tenantId, ['admin', 'doctor']) || isSuperadmin();
       }
     }
   }

@@ -12,6 +12,7 @@ const Billing = lazy(() => import('./pages/Billing'))
 const Pharmacy = lazy(() => import('./pages/Pharmacy'))
 const Templates = lazy(() => import('./pages/Templates'))
 const Settings = lazy(() => import('./pages/Settings'))
+const SuperAdmin = lazy(() => import('./pages/SuperAdmin'))
 
 const Spin = () => (
   <div className="p-10 text-body-3 text-sm">Loading…</div>
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/pharmacy" element={<Pharmacy />} />
           <Route path="/templates" element={<Templates />} />
           <Route path="/settings" element={<Settings />} />
+        <Route path="/superadmin" element={<SuperAdmin />} />
           <Route path="*" element={<Navigate to="/frontdesk" replace />} />
         </Routes>
       </Suspense>

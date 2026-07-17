@@ -1,5 +1,7 @@
 // Auth flow (OHC pattern): email/password sign-in, then tenantId + role
 // resolved from custom claims set by scripts/seedTenant.mjs (later: Cloud Function).
+// A `superadmin` claim (see scripts/setSuperadmin.mjs) is separate from the
+// per-tenant role and lets an account cross tenants in the Superadmin tool.
 import { DEMO, auth } from '../lib/firebase'
 import {
   signInWithEmailAndPassword,
@@ -14,14 +16,15 @@ const DEMO_USER = {
   role: 'doctor',
   tenantId: 'demo-clinic',
   tenantName: 'Sunrise Clinic',
+  superadmin: true,
 }
 
 export async function staffLogin(email, password) {
   if (DEMO) return DEMO_USER
   const cred = await signInWithEmailAndPassword(auth, email, password)
   const token = await cred.user.getIdTokenResult(true)
-  const { tenantId, role } = token.claims
-  if (!tenantId) {
+  const { tenantId, role, superadmin } = token.claims
+  if (!tenantId && !superadmin) {
     await fbSignOut(auth)
     throw new Error('Account has no clinic assigned. Run the seed script or contact admin.')
   }
@@ -30,7 +33,8 @@ export async function staffLogin(email, password) {
     email: cred.user.email,
     name: cred.user.displayName || cred.user.email,
     role: role || 'frontdesk',
-    tenantId,
+    tenantId: tenantId || null,
+    superadmin: !!superadmin,
   }
 }
 

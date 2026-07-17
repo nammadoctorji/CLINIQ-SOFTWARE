@@ -18,6 +18,7 @@ const TITLES = {
   '/frontdesk': 'Front desk', '/appointments': 'Appointments', '/consult': 'Consultation',
   '/history': 'Patient history', '/billing': 'Billing', '/pharmacy': 'Pharmacy & stock',
   '/templates': 'Consult templates', '/settings': 'Settings',
+  '/superadmin': 'Superadmin',
 }
 
 const Item = ({ to, icon, label }) => (
@@ -47,6 +48,12 @@ export default function AppShell({ children }) {
         {NAV.filter(can).map((i) => <Item key={i.to} {...i} />)}
         <div className="text-[10.5px] uppercase tracking-widest text-[#5F7377] px-2.5 pt-4 pb-1.5 max-md:hidden">Modules</div>
         {MODULES.filter(can).map((i) => <Item key={i.to} {...i} />)}
+        {user.superadmin && (
+          <>
+            <div className="text-[10.5px] uppercase tracking-widest text-[#5F7377] px-2.5 pt-4 pb-1.5 max-md:hidden">Platform</div>
+            <Item to="/superadmin" icon="◆" label="Superadmin" />
+          </>
+        )}
         <div className="mt-auto pt-3 px-1 border-t border-ink-2 flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-full bg-teal text-white flex items-center justify-center text-xs font-semibold">{initials}</div>
           <div className="max-md:hidden min-w-0">
