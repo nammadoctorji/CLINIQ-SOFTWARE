@@ -156,7 +156,7 @@ export default function FrontDesk() {
                   <td className="td"><Chip tone={tone}>{label}</Chip></td>
                   <td className="td">
                     {v.status === 'in_consult' && (
-                      <button className="btn-ghost" onClick={() => nav('/consult')}>Open →</button>
+                      <button className="btn-ghost" onClick={() => nav('/consult', { state: { visitId: v.id } })}>Open →</button>
                     )}
                   </td>
                 </tr>

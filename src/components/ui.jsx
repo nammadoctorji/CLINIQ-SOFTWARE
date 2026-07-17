@@ -1,5 +1,5 @@
-export const Chip = ({ tone = 'gray', children }) => (
-  <span className={`chip-${tone}`}>{children}</span>
+export const Chip = ({ tone = 'gray', className = '', children }) => (
+  <span className={`chip-${tone}${className ? ' ' + className : ''}`}>{children}</span>
 )
 
 export const Stat = ({ k, v, tone }) => (
